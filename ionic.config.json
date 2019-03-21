@@ -1,5 +1,7 @@
 {
   "name": "mobileDetector",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
