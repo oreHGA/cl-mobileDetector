@@ -6,14 +6,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <img [src]="currentImage" *ngIf="currentImage">
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="takePicture()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-button *ngIf="currentImage">
-      <ion-icon name="close"></ion-icon>
-    </ion-fab-button>
+  <div *ngIf="!currentImage" class="placeholder-img">
+    <img src="https://api.adorable.io/avatars/100/big_dawg@adorable.png">
+  </div>
+
+  <div padding>
+    <h2>Detections from image:</h2>
+    <p *ngIf="!api_response">Take an image with the camera to see predicted detections using Cloudinary</p>
+
+    <div *ngIf="api_response">
+      <ion-row *ngFor="let detection of api_response">
+        <ion-col col-4>
+          {{ detection.tag.en }} - {{ detection.confidence }}
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <!-- Action buttons for the detection feed-->
+  <ion-fab vertical="bottom">
+    <ion-row text-center>
+      <ion-col>
+        <ion-button ion-fab fab-fixed color="primary" (click)="takePicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col *ngIf="currentImage">
+        <ion-button ion-fab fab-fixed color="danger" (click)="removePicture()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col *ngIf="currentImage">
+        <ion-button ion-fab fab-fixed color="secondary" (click)="detectImage()">Detect</ion-button>
+      </ion-col>
+    </ion-row>
   </ion-fab>
+
 </ion-content>

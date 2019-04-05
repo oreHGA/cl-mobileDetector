@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DetectorService } from '../services/detector.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
+  providers: [DetectorService]
 })
-export class HomePage {
-  currentImage: any;
 
-  constructor(private camera: Camera) { }
+export class HomePage {
+  currentImage;
+  api_response: any;
+  results: Observable<any>;
+  small_list = ['a', 'b', 'c'];
+
+  constructor(private camera: Camera, private detector: DetectorService) { }
 
   takePicture() {
+    console.log('take pic');
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -25,5 +32,23 @@ export class HomePage {
     }, (err) => {
       console.log("Unable to take picture: " + err);
     })
+  }
+
+  detectImage() {
+    console.log('detecting image');
+    let call = this.detector.fetch_predictions(this.currentImage)
+
+    call.subscribe((data) => {
+      let result: any = data;
+      if (result.info != null) {
+        this.api_response = result.info.categorization.imagga_tagging.data;
+      }
+    });
+  }
+
+  removePicture() {
+    console.log('cancel pikkkc');
+    this.currentImage = null;
+    this.api_response = null;
   }
 }
