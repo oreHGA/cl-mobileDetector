@@ -1,8 +1,8 @@
 {
   "name": "mobileDetector",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Oreoluwa Ogundipe",
+  "homepage": "https://oreogundipe.dev/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
